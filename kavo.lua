@@ -71,53 +71,11 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(224, 224, 224)
     },
     BloodTheme = {
-        SchemeColor = Color3.fromRGB(227, 2, 2),
+        SchemeColor = Color3.fromRGB(227, 27, 27),
         Background = Color3.fromRGB(10, 10, 10),
         Header = Color3.fromRGB(5, 5, 5),
         TextColor = Color3.fromRGB(255,255,255),
         ElementColor = Color3.fromRGB(20, 20, 20)
-    },
-    RedBerry = {
-      SchemeColor = Color3.fromRGB(231, 17, 42),
-      Background = Color3.fromRGB(0, 0, 0),
-      Header = Color3.fromRGB(31, 31, 31),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(31, 31, 31)
-    },
-    BlueBerry = {
-      SchemeColor = Color3.fromRGB(2, 17, 231),
-      Background = Color3.fromRGB(0, 0, 0),
-      Header = Color3.fromRGB(31, 31, 31),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(31, 31, 31)
-    },
-    Corn = {
-      SchemeColor = Color3.fromRGB(249, 100, 30),
-      Background = Color3.fromRGB(0, 0, 0),
-      Header = Color3.fromRGB(0, 0, 0),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(31, 31, 31)
-    },
-    Kiwi = {
-      SchemeColor = Color3.fromRGB(48, 255, 0),
-      Background = Color3.fromRGB(41, 41, 41),
-      Header = Color3.fromRGB(31, 31, 31),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(66, 66, 66)
-    },
-    Luna = {
-      SchemeColor = Color3.fromRGB(126, 6, 232),
-      Background = Color3.fromRGB(0, 0, 0),
-      Header = Color3.fromRGB(31, 31, 31),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(31, 31, 31)
-    },
-    Night = {
-      SchemeColor = Color3.fromRGB(37, 37, 166),
-      Background = Color3.fromRGB(24, 24, 107),
-      Header = Color3.fromRGB(28, 28, 198),
-      TextColor = Color3.fromRGB(255,255,255),
-      ElementColor = Color3.fromRGB(31, 31, 31)
     },
     GrapeTheme = {
         SchemeColor = Color3.fromRGB(166, 71, 214),
@@ -155,10 +113,10 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(24, 24, 24)
     },
     Serpent = {
-        SchemeColor = Color3.fromRGB(93, 63, 211),
-        Background = Color3.fromRGB(0, 0, 0),
+        SchemeColor = Color3.fromRGB(0, 166, 58),
+        Background = Color3.fromRGB(31, 41, 43),
         Header = Color3.fromRGB(22, 29, 31),
-        TextColor = Color3.fromRGB(255, 255, 255),
+        TextColor = Color3.fromRGB(255,255,255),
         ElementColor = Color3.fromRGB(22, 29, 31)
     }
 }
@@ -167,6 +125,19 @@ local oldTheme = ""
 local SettingsT = {
 
 }
+
+local Name = "KavoConfig.JSON"
+if not isfile("KavoConfig.JSON") then
+   writefile(Name, "{}") 
+end
+pcall(function()
+
+if not pcall(function() readfile(Name) end) then
+writefile(Name, game:service'HttpService':JSONEncode(SettingsT))
+end
+
+Settings = game:service'HttpService':JSONEncode(readfile(Name))
+end)
 
 local LibName = tostring(math.random(1, 100))..tostring(math.random(1,50))..tostring(math.random(1, 100))
 
@@ -188,18 +159,6 @@ function Kavo.CreateLib(kavName, themeList)
         themeList = themeStyles.LightTheme
     elseif themeList == "BloodTheme" then
         themeList = themeStyles.BloodTheme
-    elseif themeList == "RedBerry" then
-      themeList = themeStyles.RedBerry
-    elseif themeList == "BlueBerry" then
-        themeList = themeStyles.BlueBerry
-    elseif themeList == "Corn" then
-        themeList = themeStyles.Corn
-    elseif themeList == "Kiwi" then
-        themeList = themeStyles.Kiwi
-    elseif themeList == "Luna" then
-        themeList = themeStyles.Luna
-    elseif themeList == "Night" then
-        themeList = themeStyles.Night
     elseif themeList == "GrapeTheme" then
         themeList = themeStyles.GrapeTheme
     elseif themeList == "Ocean" then
@@ -265,7 +224,7 @@ function Kavo.CreateLib(kavName, themeList)
     blurFrame.Size = UDim2.new(0, 376, 0, 289)
     blurFrame.ZIndex = 999
 
-    ScreenGui.Parent = game:GetService("CoreGui")
+    ScreenGui.Parent = game.CoreGui
     ScreenGui.Name = LibName
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.ResetOnSpawn = false
@@ -312,6 +271,28 @@ function Kavo.CreateLib(kavName, themeList)
     title.TextColor3 = Color3.fromRGB(245, 245, 245)
     title.TextSize = 16.000
     title.TextXAlignment = Enum.TextXAlignment.Left
+
+    close.Name = "close"
+    close.Parent = MainHeader
+    close.BackgroundTransparency = 1.000
+    close.Position = UDim2.new(0.949999988, 0, 0.137999997, 0)
+    close.Size = UDim2.new(0, 21, 0, 21)
+    close.ZIndex = 2
+    close.Image = "rbxassetid://3926305904"
+    close.ImageRectOffset = Vector2.new(284, 4)
+    close.ImageRectSize = Vector2.new(24, 24)
+    close.MouseButton1Click:Connect(function()
+        game.TweenService:Create(close, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
+            ImageTransparency = 1
+        }):Play()
+        wait()
+        game.TweenService:Create(Main, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+			Size = UDim2.new(0,0,0,0),
+			Position = UDim2.new(0, Main.AbsolutePosition.X + (Main.AbsoluteSize.X / 2), 0, Main.AbsolutePosition.Y + (Main.AbsoluteSize.Y / 2))
+		}):Play()
+        wait(1)
+        ScreenGui:Destroy()
+    end)
 
     MainSide.Name = "MainSide"
     MainSide.Parent = Main
@@ -1246,7 +1227,7 @@ function Kavo.CreateLib(kavName, themeList)
                 slidTip = slidTip or "Slider tip here"
                 maxvalue = maxvalue or 500
                 minvalue = minvalue or 16
-                startVal = startVal or 0.1
+                startVal = startVal or 0
                 callback = callback or function() end
 
                 local sliderElement = Instance.new("TextButton")
@@ -1346,7 +1327,7 @@ function Kavo.CreateLib(kavName, themeList)
                 val.Position = UDim2.new(0.352386296, 0, 0.272727281, 0)
                 val.Size = UDim2.new(0, 41, 0, 14)
                 val.Font = Enum.Font.GothamSemibold
-                val.Text = startVal
+                val.Text = minvalue
                 val.TextColor3 = themeList.TextColor
                 val.TextSize = 14.000
                 val.TextTransparency = 1.000
@@ -2497,4 +2478,171 @@ function Kavo.CreateLib(kavName, themeList)
                         moreInfo.BackgroundColor3 = Color3.fromRGB(themeList.SchemeColor.r * 255 - 14, themeList.SchemeColor.g * 255 - 17, themeList.SchemeColor.b * 255 - 13)
                         moreInfo.TextColor3 = themeList.TextColor
                         viewInfo.ImageColor3 = themeList.SchemeColor
-                        colorInners.BackgroundColor3 
+                        colorInners.BackgroundColor3 = themeList.ElementColor
+                        toggleDisabled.ImageColor3 = themeList.SchemeColor
+                        toggleEnabled.ImageColor3 = themeList.SchemeColor
+                        togName_2.TextColor3 = themeList.TextColor
+                        Sample.ImageColor3 = themeList.SchemeColor
+                    end
+                end)()
+                updateSectionFrame()
+                UpdateSize()
+                local plr = game.Players.LocalPlayer
+                local mouse = plr:GetMouse()
+                local uis = game:GetService('UserInputService')
+                local rs = game:GetService("RunService")
+                local colorpicker = false
+                local darknesss = false
+                local dark = false
+                local rgb = rgb    
+                local dark = darkness    
+                local cursor = rbgcircle
+                local cursor2 = darkcircle
+                local color = {1,1,1}
+                local rainbow = false
+                local rainbowconnection
+                local counter = 0
+                --
+                local function zigzag(X) return math.acos(math.cos(X*math.pi))/math.pi end
+                counter = 0
+                local function mouseLocation()
+                    return plr:GetMouse()
+                end
+                local function cp()
+                    if colorpicker then
+                        local ml = mouseLocation()
+                        local x,y = ml.X - rgb.AbsolutePosition.X,ml.Y - rgb.AbsolutePosition.Y
+                        local maxX,maxY = rgb.AbsoluteSize.X,rgb.AbsoluteSize.Y
+                        if x<0 then x=0 end
+                        if x>maxX then x=maxX end
+                        if y<0 then y=0 end
+                        if y>maxY then y=maxY end
+                        x = x/maxX
+                        y = y/maxY
+                        local cx = cursor.AbsoluteSize.X/2
+                        local cy = cursor.AbsoluteSize.Y/2
+                        cursor.Position = UDim2.new(x,-cx,y,-cy)
+                        color = {1-x,1-y,color[3]}
+                        local realcolor = Color3.fromHSV(color[1],color[2],color[3])
+                        colorCurrent.BackgroundColor3 = realcolor
+                        callback(realcolor)
+                    end
+                    if darknesss then
+                        local ml = mouseLocation()
+                        local y = ml.Y - dark.AbsolutePosition.Y
+                        local maxY = dark.AbsoluteSize.Y
+                        if y<0 then y=0 end
+                        if y>maxY then y=maxY end
+                        y = y/maxY
+                        local cy = cursor2.AbsoluteSize.Y/2
+                        cursor2.Position = UDim2.new(0.5,0,y,-cy)
+                        cursor2.ImageColor3 = Color3.fromHSV(0,0,y)
+                        color = {color[1],color[2],1-y}
+                        local realcolor = Color3.fromHSV(color[1],color[2],color[3])
+                        colorCurrent.BackgroundColor3 = realcolor
+                        callback(realcolor)
+                    end
+                end
+
+                local function setcolor(tbl)
+                    local cx = cursor.AbsoluteSize.X/2
+                    local cy = cursor.AbsoluteSize.Y/2
+                    color = {tbl[1],tbl[2],tbl[3]}
+                    cursor.Position = UDim2.new(color[1],-cx,color[2]-1,-cy)
+                    cursor2.Position = UDim2.new(0.5,0,color[3]-1,-cy)
+                    local realcolor = Color3.fromHSV(color[1],color[2],color[3])
+                    colorCurrent.BackgroundColor3 = realcolor
+                end
+                local function setrgbcolor(tbl)
+                    local cx = cursor.AbsoluteSize.X/2
+                    local cy = cursor.AbsoluteSize.Y/2
+                    color = {tbl[1],tbl[2],color[3]}
+                    cursor.Position = UDim2.new(color[1],-cx,color[2]-1,-cy)
+                    local realcolor = Color3.fromHSV(color[1],color[2],color[3])
+                    colorCurrent.BackgroundColor3 = realcolor
+                    callback(realcolor)
+                end
+                local function togglerainbow()
+                    if rainbow then
+                        game.TweenService:Create(toggleEnabled, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
+                            ImageTransparency = 1
+                        }):Play()
+                        rainbow = false
+                        rainbowconnection:Disconnect()
+                    else
+                        game.TweenService:Create(toggleEnabled, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
+                            ImageTransparency = 0
+                        }):Play()
+                        rainbow = true
+                        rainbowconnection = rs.RenderStepped:Connect(function()
+                            setrgbcolor({zigzag(counter),1,1})
+                            counter = counter + 0.01
+                        end)
+                    end
+                end
+
+                onrainbow.MouseButton1Click:Connect(togglerainbow)
+                --
+                mouse.Move:connect(cp)
+                rgb.MouseButton1Down:connect(function()colorpicker=true end)
+                dark.MouseButton1Down:connect(function()darknesss=true end)
+                uis.InputEnded:Connect(function(input)
+                    if input.UserInputType.Name == 'MouseButton1' then
+                        if darknesss then darknesss = false end
+                        if colorpicker then colorpicker = false end
+                    end
+                end)
+                setcolor({h,s,v})
+            end
+            
+            function Elements:NewLabel(title)
+            	local labelFunctions = {}
+            	local label = Instance.new("TextLabel")
+            	local UICorner = Instance.new("UICorner")
+            	label.Name = "label"
+            	label.Parent = sectionInners
+            	label.BackgroundColor3 = themeList.SchemeColor
+            	label.BorderSizePixel = 0
+				label.ClipsDescendants = true
+            	label.Text = title
+           		label.Size = UDim2.new(0, 352, 0, 33)
+	            label.Font = Enum.Font.Gotham
+	            label.Text = "  "..title
+	            label.RichText = true
+	            label.TextColor3 = themeList.TextColor
+	            Objects[label] = "TextColor3"
+	            label.TextSize = 14.000
+	            label.TextXAlignment = Enum.TextXAlignment.Left
+	            
+	           	UICorner.CornerRadius = UDim.new(0, 4)
+                UICorner.Parent = label
+            	
+	            if themeList.SchemeColor == Color3.fromRGB(255,255,255) then
+	                Utility:TweenObject(label, {TextColor3 = Color3.fromRGB(0,0,0)}, 0.2)
+	            end 
+	            if themeList.SchemeColor == Color3.fromRGB(0,0,0) then
+	                Utility:TweenObject(label, {TextColor3 = Color3.fromRGB(255,255,255)}, 0.2)
+	            end 
+
+		        coroutine.wrap(function()
+		            while wait() do
+		                label.BackgroundColor3 = themeList.SchemeColor
+		                label.TextColor3 = themeList.TextColor
+		            end
+		        end)()
+                updateSectionFrame()
+                UpdateSize()
+                function labelFunctions:UpdateLabel(newText)
+                	if label.Text ~= "  "..newText then
+                		label.Text = "  "..newText
+                	end
+                end	
+                return labelFunctions
+            end	
+            return Elements
+        end
+        return Sections
+    end  
+    return Tabs
+end
+return Kavo
